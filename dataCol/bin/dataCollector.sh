@@ -4,7 +4,7 @@
 BASE=$HOME/curVis/dataCol
 LOG_DIR=$BASE/logs
 DATA_DIR=$BASE/data
-OUT_LOG=$LOG_DIR/output.log
+OUT_LOG=$LOG_DIR/dataCol_output.log
 DATA_FILE=$DATA_DIR/data.zip
 UNZIPPED_DATA=$DATA_DIR/currency_data.csv
 UNZIP=`which unzip`
