@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #related directories and files
-BASE=$HOME/app/curVis
+BASE=$HOME/curVis
 LOG_DIR=$BASE/logs
 DATA_DIR=$BASE/data
 OUT_LOG=$LOG_DIR/output.log
