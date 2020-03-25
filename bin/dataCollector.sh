@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #related directories and files
-BASE=$HOME/curVis
+BASE=$HOME/curVis/dataCol
 LOG_DIR=$BASE/logs
 DATA_DIR=$BASE/data
 OUT_LOG=$LOG_DIR/output.log
@@ -20,12 +20,14 @@ then
 fi
 
 #put timestamp into output.log
-echo "==============================================" >> $OUT_LOG
 echo `date`: >> $OUT_LOG
 echo >> $OUT_LOG
 
 #download the zip file from ECB webpage
 $CURL -L "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.zip?ee318a8fef4b64837f6f7f900275b4c7" > $DATA_FILE 2>> $OUT_LOG
+
+#visual distinguisher in output.log
+echo "==============================================" >> $OUT_LOG
 
 #Unzip data.zip and rename the file
 $UNZIP $DATA_FILE -d $DATA_DIR > /dev/null 2>&1 && mv $DATA_DIR/`echo $(unzip -lqq $DATA_FILE | awk '{print $NF}')` $UNZIPPED_DATA
