@@ -1,5 +1,4 @@
 #ignore dirs and files
 
-logs/
-data/
-data.zip
+dataCol/logs/
+dataCol/data/
