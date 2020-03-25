@@ -1,4 +1,5 @@
 #ignore dirs and files
 
 logs/
+data/
 data.zip
