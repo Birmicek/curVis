@@ -143,5 +143,4 @@ if __name__ == "__main__":
         print(f"Created table \"{user}\" and loaded data into it")
     
     except psycopg2.errors.DuplicateTable:
-        db_connect().load_csv_file()
         print(f"Table \"{user}\" already exists")
