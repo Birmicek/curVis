@@ -52,14 +52,12 @@ class csv_constructor():
         currency = csv_constructor().get_currency()
 
 
-class db_connect():
+class db_connect:
     def __init__(self):
         #create connection to DB
-        global conn
-        conn = psycopg2.connect("host=localhost dbname=postgres user=postgres password=postgres")
-        #conn.autocommit = True
-        global cur
-        cur = conn.cursor()
+        self.conn = psycopg2.connect("host=localhost dbname=postgres user=postgres password=postgres")
+        self.conn.autocommit = True
+        self.cur = self.conn.cursor()
 
         #removes the last column = empty column in CSV 
         with open(source_file,"r") as source:
@@ -75,6 +73,9 @@ class db_connect():
                 writer = csv.writer(out, delimiter=",")      
                 writer.writerow(next(src))  # write header
                 writer.writerows(reversed(list(src)))
+
+    def __del__(self):
+        self.conn.close()
         
     #check if table $USER exists and if not, create it
     def create_table(self):
@@ -122,21 +123,19 @@ class db_connect():
                     SGD	text,
                     THB	text,
                     ZAR	text);"""
-        cur.execute(new_table)
-        conn.commit()
+        self.cur.execute(new_table)
 
     #load the data in CSV file into $USER table
     def load_csv_file(self):
         with open(output_file, "r") as f:
             next(f)   #skip the header
-            cur.copy_from(f, user, sep=",", columns=['Date', 'USD', 'JPY', 'BGN', 'CYP', 'CZK', 'DKK', 'EEK', 'GBP', 'HUF', 'LTL', 'LVL', 'MTL', 'PLN', 'ROL', 'RON', 'SEK', 'SIT', 'SKK', 'CHF', 'ISK', 'NOK', 'HRK', 'RUB', 'TRL', 'TRY', 'AUD', 'BRL', 'CAD', 'CNY', 'HKD', 'IDR', 'ILS', 'INR', 'KRW', 'MXN', 'MYR', 'NZD', 'PHP', 'SGD', 'THB', 'ZAR'])
-            conn.commit()
+            self.cur.copy_from(f, user, sep=",", columns=['Date', 'USD', 'JPY', 'BGN', 'CYP', 'CZK', 'DKK', 'EEK', 'GBP', 'HUF', 'LTL', 'LVL', 'MTL', 'PLN', 'ROL', 'RON', 'SEK', 'SIT', 'SKK', 'CHF', 'ISK', 'NOK', 'HRK', 'RUB', 'TRL', 'TRY', 'AUD', 'BRL', 'CAD', 'CNY', 'HKD', 'IDR', 'ILS', 'INR', 'KRW', 'MXN', 'MYR', 'NZD', 'PHP', 'SGD', 'THB', 'ZAR'])
 
     def add_new_values(self):
         #check the last date in DB table
         date_query = f"SELECT date FROM osboxes ORDER BY id DESC LIMIT 1;"
-        cur.execute(date_query)
-        last_date_in_table = cur.fetchone()[0]
+        self.cur.execute(date_query)
+        last_date_in_table = self.cur.fetchone()[0]
 
         with open(output_file, "r") as f:
             last_date_in_csv = list(csv.reader(f))[-1][0]
@@ -150,9 +149,8 @@ class db_connect():
         else:
             print("Inserting new values into DB")
             insert_query = f"INSERT INTO {user} VALUES (default, '{last_row_in_csv}');"
-            cur.execute(insert_query)
-            conn.commit()
-            print("Done")
+            self.cur.execute(insert_query)
+            print("New values inserted into DB table")
 
     
 if __name__ == "__main__":
@@ -164,4 +162,3 @@ if __name__ == "__main__":
     except psycopg2.errors.DuplicateTable:
         print(f"Table \"{user}\" already exists")
         db_connect().add_new_values()
-    conn.close()
