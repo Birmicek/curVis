@@ -1,6 +1,7 @@
 import os
 import csv
 import psycopg2
+import datetime
 
 #defining the .csv files and user
 home_dir = os.popen("echo $HOME").read().strip()
@@ -74,6 +75,8 @@ class db_connect:
                 writer.writerow(next(src))  # write header
                 writer.writerows(reversed(list(src)))
 
+        
+
     def __del__(self):
         self.conn.close()
         
@@ -128,8 +131,11 @@ class db_connect:
     #load the data in CSV file into $USER table
     def load_csv_file(self):
         with open(output_file, "r") as f:
+            src = csv.reader(f, delimiter=",")
+            col_names = list(src)[0]
+        with open(output_file, "r") as f:
             next(f)   #skip the header
-            self.cur.copy_from(f, user, sep=",", columns=['Date', 'USD', 'JPY', 'BGN', 'CYP', 'CZK', 'DKK', 'EEK', 'GBP', 'HUF', 'LTL', 'LVL', 'MTL', 'PLN', 'ROL', 'RON', 'SEK', 'SIT', 'SKK', 'CHF', 'ISK', 'NOK', 'HRK', 'RUB', 'TRL', 'TRY', 'AUD', 'BRL', 'CAD', 'CNY', 'HKD', 'IDR', 'ILS', 'INR', 'KRW', 'MXN', 'MYR', 'NZD', 'PHP', 'SGD', 'THB', 'ZAR'])
+            self.cur.copy_from(f, user, sep=",", columns=col_names)
 
     def add_new_values(self):
         #check the last date in DB table
