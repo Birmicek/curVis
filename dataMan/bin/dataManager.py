@@ -47,7 +47,6 @@ class db_connect:
                     i[0] = datetime.datetime.strptime(i[0], '%Y-%m-%d').date()
                     for y in i[1:]:
                         if y == 'N/A':
-                            #i[i.index(y)] = None
                             pass
                         else:
                             i[i.index(y)] = float(y)
@@ -103,6 +102,8 @@ class db_connect:
                     THB	numeric,
                     ZAR	numeric);"""
         self.cur.execute(new_table)
+        self.load_csv_file()
+        print(f"Created table \"{user}\" and loaded data into it")
 
     #load the data in CSV file into $USER table
     def load_csv_file(self):
@@ -141,12 +142,10 @@ class db_connect:
 
             print("New values inserted into DB table")
 
-   
+
 if __name__ == "__main__":
     try:
         db_connect().create_table()
-        db_connect().load_csv_file()
-        print(f"Created table \"{user}\" and loaded data into it")
     
     except psycopg2.errors.DuplicateTable:
         print(f"Table \"{user}\" already exists")
