@@ -8,50 +8,8 @@ home_dir = os.popen("echo $HOME").read().strip()
 source_file = os.path.join(home_dir, "curVis/dataCol/data/currency_data.csv")
 mid_file = os.path.join(home_dir, "curVis/dataCol/data/currency_data_mid.csv")
 output_file = os.path.join(home_dir, "curVis/dataCol/data/currency_data_updated.csv")
+final_output = os.path.join(home_dir, "curVis/dataCol/data/currency_data_final.csv")
 user = os.popen("echo $USER").read().strip()
-
-#defing class that saves the data and prepare them for DB insertion
-class csv_constructor():
-    def __init__(self):
-        #file = open(source_file, "r")
-        #global csv_file
-        #csv_file = csv.reader(file, delimiter=",")
-        with open(source_file,"r") as source:
-            with open(output_file,"w") as out:
-                writer=csv.writer(out)
-                for row in csv.reader(source, delimiter=","):
-                    writer.writerow(row[:-1])
-        
-    def get_currency(self):
-        currency = []
-        column_name = next(csv_file, None)
-        column_name = column_name[1:]
-        for i in column_name:
-            if i == "":
-                continue
-            else:
-                i = "EUR/" + i
-                currency.append(i)
-        return currency
-
-    def get_date(self):
-        dates = []
-        line_count = 0
-        for row in csv_file:
-            if line_count == 0:
-                line_count += 1
-                continue
-            else:
-                dates.append(row[0])
-        return dates
-
-    def get_values(self):
-        final = {}
-        item = {}
-        column_count = 1
-        dates = csv_constructor().get_date()
-        currency = csv_constructor().get_currency()
-
 
 class db_connect:
     def __init__(self):
@@ -75,67 +33,85 @@ class db_connect:
                 writer.writerow(next(src))  # write header
                 writer.writerows(reversed(list(src)))
 
-        
+        with open(output_file, "r") as out:
+            with open(final_output, "w") as final:
+                src = csv.reader(out, delimiter=",")
+                writer = csv.writer(final, delimiter=",")
+                writer.writerow(next(src))
+
+        with open(output_file, "r") as out:
+            with open(final_output, "a") as final:      
+                src = list(csv.reader(out, delimiter=","))[1:]
+                writer = csv.writer(final, delimiter=",")
+                for i in src:
+                    i[0] = datetime.datetime.strptime(i[0], '%Y-%m-%d').date()
+                    for y in i[1:]:
+                        if y == 'N/A':
+                            #i[i.index(y)] = None
+                            pass
+                        else:
+                            i[i.index(y)] = float(y)
+                    writer.writerow(i)
 
     def __del__(self):
         self.conn.close()
         
-    #check if table $USER exists and if not, create it
+    #checks if table $USER exists and if not, create it
     def create_table(self):
         new_table = f"""CREATE TABLE {user} (
                     id SERIAL PRIMARY KEY,
-                    Date text,
-                    USD	text,
-                    JPY	text,
-                    BGN	text,
-                    CYP	text,
-                    CZK	text,
-                    DKK	text,
-                    EEK	text,
-                    GBP	text,
-                    HUF	text,
-                    LTL	text,
-                    LVL	text,
-                    MTL	text,
-                    PLN	text,
-                    ROL	text,
-                    RON	text,
-                    SEK	text,
-                    SIT	text,
-                    SKK	text,
-                    CHF	text,
-                    ISK	text,
-                    NOK	text,
-                    HRK	text,
-                    RUB	text,
-                    TRL	text,
-                    TRY	text,
-                    AUD	text,
-                    BRL	text,
-                    CAD	text,
-                    CNY	text,
-                    HKD	text,
-                    IDR	text,
-                    ILS	text,
-                    INR	text,
-                    KRW	text,
-                    MXN	text,
-                    MYR	text,
-                    NZD	text,
-                    PHP	text,
-                    SGD	text,
-                    THB	text,
-                    ZAR	text);"""
+                    Date date,
+                    USD	numeric,
+                    JPY	numeric,
+                    BGN	numeric,
+                    CYP	numeric,
+                    CZK	numeric,
+                    DKK	numeric,
+                    EEK	numeric,
+                    GBP	numeric,
+                    HUF	numeric,
+                    LTL	numeric,
+                    LVL	numeric,
+                    MTL	numeric,
+                    PLN	numeric,
+                    ROL	numeric,
+                    RON	numeric,
+                    SEK	numeric,
+                    SIT	numeric,
+                    SKK	numeric,
+                    CHF	numeric,
+                    ISK	numeric,
+                    NOK	numeric,
+                    HRK	numeric,
+                    RUB	numeric,
+                    TRL	numeric,
+                    TRY	numeric,
+                    AUD	numeric,
+                    BRL	numeric,
+                    CAD	numeric,
+                    CNY	numeric,
+                    HKD	numeric,
+                    IDR	numeric,
+                    ILS	numeric,
+                    INR	numeric,
+                    KRW	numeric,
+                    MXN	numeric,
+                    MYR	numeric,
+                    NZD	numeric,
+                    PHP	numeric,
+                    SGD	numeric,
+                    THB	numeric,
+                    ZAR	numeric);"""
         self.cur.execute(new_table)
 
     #load the data in CSV file into $USER table
     def load_csv_file(self):
-        with open(output_file, "r") as f:
+        with open(final_output, "r") as f:
             src = csv.reader(f, delimiter=",")
             col_names = list(src)[0]
-        with open(output_file, "r") as f:
+        with open(final_output, "r") as f:
             next(f)   #skip the header
-            self.cur.copy_from(f, user, sep=",", columns=col_names)
+            self.cur.copy_from(f, user, sep=",", columns=col_names, null='N/A')
 
     def add_new_values(self):
         #check the last date in DB table
@@ -143,22 +119,29 @@ class db_connect:
         self.cur.execute(date_query)
         last_date_in_table = self.cur.fetchone()[0]
 
-        with open(output_file, "r") as f:
-            last_date_in_csv = list(csv.reader(f))[-1][0]
-
-        with open(output_file, "r") as f:
-            last_row_in_csv = list(csv.reader(f))[-1]
-            last_row_in_csv = "', '".join(last_row_in_csv)
+        with open(final_output, "r") as f:
+            last_date_in_csv = datetime.datetime.strptime(list(csv.reader(f))[-1][0], '%Y-%m-%d').date()            
 
         if last_date_in_table == last_date_in_csv:
             print("The DB table is already updated with latest values of currency rates")
         else:
             print("Inserting new values into DB")
-            insert_query = f"INSERT INTO {user} VALUES (default, '{last_row_in_csv}');"
-            self.cur.execute(insert_query)
+            last_line = os.path.join(home_dir, "curVis/dataCol/data/last_line.csv")
+            with open(final_output, "r") as f:
+                with open(last_line, "w") as line:
+                    last_row_in_csv = list(csv.reader(f, delimiter=","))[-1]
+                    writer = csv.writer(line, delimiter=",")
+                    writer.writerow(last_row_in_csv)
+            
+            with open(final_output, "r") as f:
+                with open(last_line, "r") as line:
+                    src = csv.reader(f, delimiter=",")
+                    col_names = list(src)[0]
+                    self.cur.copy_from(line, user, sep=",", columns=col_names, null='N/A')
+
             print("New values inserted into DB table")
 
-    
+   
 if __name__ == "__main__":
     try:
         db_connect().create_table()
