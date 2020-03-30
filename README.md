@@ -1,7 +1,7 @@
 Currency Visualization - curVis
 
 Runs on every Unix/Linux OS based system
-This program downloads data of currency rates of EUR upon other world currencies from ECB official webpage. The data is being collected from the beginning of 1994 up to this day. After that the data is initially pushed into Postgresql DB.
+This program downloads data of currency rates of EUR upon other world currencies from ECB official webpage. The data is being collected from the beginning of 1999 up to this day. After that the data is initially pushed into Postgresql DB.
 Upon this DB, there is Java application which will then view this data.
 
 Prerequisities:
