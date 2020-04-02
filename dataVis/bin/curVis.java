@@ -6,15 +6,21 @@ import src.*;
 public class curVis 
 {
  
-    public static void main(String[] args) 
-    {   Scanner input = new Scanner(System.in);
-        System.out.print("Hello, please tell us your name: ");
-        String fname = input.next();
-        System.out.println("\nWelcome to Currency Visualization program, " + fname + ".\n");
-        System.out.println("This program shows currency rates of EUR upon other world currencies. The data is present since 04-th of January 1999. It is possible to view individual values per day, monthly and yearly averages, differences between values and more which you are about to discover within the self-help menu below:\n");
-        input.close();
-        MainMenu obj = new MainMenu();
-        obj.show();
+    public static void main(final String[] args) {
+        Welcome intro = new Welcome();
+        String fname = intro.show();
+
+        MainMenu options = new MainMenu();
+        int selection = options.choice();
+
+        if (selection == 5) {
+            System.out.println("Thank you " + fname + " for using Currency Visualization program. We hope to see you some time soon");
+            System.exit(0);
+        }
+        else {
+            //Code to be added
+            System.out.println("Please continue");
+        }
         
     }
 }
