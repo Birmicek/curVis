@@ -2,3 +2,5 @@
 
 dataCol/logs/
 dataCol/data/
+dataVis/bin/curVis.class
+dataVis/src/*.class
