@@ -3,15 +3,18 @@ package bin;
 import java.util.Scanner;
 import src.*;
 
-public class curVis 
+public class CurVis 
 {
- 
-    public static void main(final String[] args) {
+    public static String fname;
+    public static int selection;
+    public static int subSelection;
+
+    public static void main(String[] args) {
         Welcome intro = new Welcome();
-        String fname = intro.show();
+        fname = intro.show();
 
         MainMenu options = new MainMenu();
-        int selection = options.choice();
+        selection = options.choice();
 
         if (selection == 4) {
             System.out.println("Thank you " + fname + " for using Currency Visualization program. We hope to see you some time soon");
@@ -22,7 +25,7 @@ public class curVis
 
         switch(selection) {
             case 1:
-                int subSelection = subOptions.subDailyChoice();
+                subSelection = subOptions.subDailyChoice();
                 break;
             case 2:
                 subSelection = subOptions.subMonthlyChoice();
@@ -32,12 +35,10 @@ public class curVis
                 break;
             default:
                 System.out.println("You haven't chosen any proper option!");
-            
-        //System.out.println(subSelection);
         }
-
-
-        //int subSelection = subOptions.subChoice();
+        
+        SpecificSelection sel = new SpecificSelection();
+        sel.selection();
         
     }
 }
