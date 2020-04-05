@@ -39,6 +39,9 @@ public class CurVis
         
         SpecificSelection sel = new SpecificSelection();
         sel.selection();
+
+        DbConnect connection = new DbConnect();
+        connection.execute();
         
     }
 }

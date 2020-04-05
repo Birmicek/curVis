@@ -2,6 +2,7 @@ package src;
 
 import java.util.Scanner;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Arrays;
 import bin.CurVis;
 
@@ -29,8 +30,8 @@ public class SpecificSelection {
                         System.out.print("Dates: ");
                         String[] inpIndDates = indDates.next().split(",");
                         
-                        System.out.println(inpIndCurr);
-                        System.out.println(inpIndDates);
+                        // System.out.println(Arrays.toString(inpIndCurr));
+                        // System.out.println(Arrays.toString(inpIndDates));
                         break;
 
                     case 2:
@@ -50,11 +51,9 @@ public class SpecificSelection {
                         System.out.print("End date: ");
                         String endRanDate = endDate.next();
 
-                        System.out.println(inpRangeCurr);
-                        System.out.println(startRanDate);
-                        System.out.println(endRanDate);
-
-
+                        // System.out.println(Arrays.toString(inpRangeCurr));
+                        // System.out.println(startRanDate);
+                        // System.out.println(endRanDate);
                         break;
                         
                     default:
