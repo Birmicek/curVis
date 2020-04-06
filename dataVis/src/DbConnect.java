@@ -19,13 +19,30 @@ public class DbConnect {
         try {
             Connection conn = DriverManager.getConnection(url, user, password);
             Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM osboxes ORDER BY id DESC LIMIT 10");
-            // ResultSetMetaData md = rs.getMetaData();
-            // int colCount = md.getColumnCount();
+            ResultSet rs = st.executeQuery("SELECT * FROM osboxes ORDER BY id DESC LIMIT 5");
+            ResultSetMetaData md = rs.getMetaData();
+            int colCount = md.getColumnCount();         
+            
+            for(int i = 1; i <= colCount; i++) {
+                String colName = md.getColumnName(i);
+                if(i == colCount) {
+                    System.out.print(colName + "\n");
+                }
+                else {
+                    System.out.print(colName + " ");
+                }
+            }
 
             while (rs.next()) {
-                System.out.println(rs.getString(1));
-                
+                for (int i = 1; i <= colCount; i++) {
+                    if (i == colCount) {
+                        System.out.print(rs.getString(i) + "\n");
+                    }
+                    else {
+                        System.out.print(rs.getString(i) + " ");
+                    }
+                }
+                                
             }
             rs.close();
             st.close();
