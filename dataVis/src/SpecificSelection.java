@@ -9,6 +9,8 @@ import bin.CurVis;
 public class SpecificSelection {
     int selectedOption = CurVis.selection;
     int selectedSubOption = CurVis.subSelection;
+    public static String[] inpIndCurr;
+    public static String[] inpIndDates;
     String currencies = "USD, JPY, BGN, CYP, CZK, DKK, EEK, GBP, HUF, LTL, LVL, MTL, PLN, ROL, RON, SEK, SIT, SKK, CHF, ISK, NOK, HRK, RUB, TRL, TRY, AUD, BRL, CAD, CNY, HKD, IDR, ILS, INR, KRW, MXN, MYR, NZD, PHP, SGD, THB, ZAR";
 
     public void selection() {
@@ -23,12 +25,12 @@ public class SpecificSelection {
                         Scanner indCur = new Scanner(System.in);
                         System.out.println("Please enter 1 or more currencies (from above list) separated by comma without space. Example: USD,JPY,CZK or type 'all' to see values for all currencies\n");
                         System.out.print("Currencies: ");
-                        String[] inpIndCurr = indCur.next().split(",");
+                        inpIndCurr = indCur.next().split(",");
 
                         Scanner indDates = new Scanner(System.in);
                         System.out.println("\nPlease enter 1 or more dates (in format as above) separated by comma without space. Example: 1999-01-22,2020-03-25 or type 'all' to see values for all dates\n");
                         System.out.print("Dates: ");
-                        String[] inpIndDates = indDates.next().split(",");
+                        inpIndDates = indDates.next().split(",");
                         
                         // System.out.println(Arrays.toString(inpIndCurr));
                         // System.out.println(Arrays.toString(inpIndDates));

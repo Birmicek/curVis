@@ -10,8 +10,8 @@ public class CurVis
     public static int subSelection;
 
     public static void main(String[] args) {
-        Welcome intro = new Welcome();
-        fname = intro.show();
+        // Welcome intro = new Welcome();
+        // fname = intro.show();
 
         MainMenu options = new MainMenu();
         selection = options.choice();
@@ -41,6 +41,7 @@ public class CurVis
         sel.selection();
 
         DbConnect connection = new DbConnect();
+        connection.setSql();
         connection.execute();
         
     }
