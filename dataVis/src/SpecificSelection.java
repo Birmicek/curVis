@@ -31,9 +31,6 @@ public class SpecificSelection {
                         System.out.println("\nPlease enter 1 or more dates (in format as above) separated by comma without space. Example: 1999-01-22,2020-03-25 or type 'all' to see values for all dates\n");
                         System.out.print("Dates: ");
                         inpIndDates = indDates.next().split(",");
-                        
-                        // System.out.println(Arrays.toString(inpIndCurr));
-                        // System.out.println(Arrays.toString(inpIndDates));
                         break;
 
                     case 2:
@@ -52,10 +49,6 @@ public class SpecificSelection {
                         System.out.println("\nPlease enter End date of the date range. Example: 2020-03-25\n");
                         System.out.print("End date: ");
                         endRanDate = endDate.next();
-
-                        // System.out.println(Arrays.toString(inpRangeCurr));
-                        // System.out.println(startRanDate);
-                        // System.out.println(endRanDate);
                         break;
                         
                     default:
