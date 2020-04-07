@@ -12,6 +12,8 @@ public class DbConnect {
     private String user= "postgres";
     private String password = "postgres";
     String sql;
+    String format1 = "%1$9s";
+    String format2 =  "%1$10s";
     String inpIndCurr = Arrays.toString(SpecificSelection.inpIndCurr).replace("[", "").replace("]", "");
     String inpRangeCurr = Arrays.toString(SpecificSelection.inpRangeCurr).replace("[", "").replace("]", "");
     String inpIndDates = Arrays.toString(SpecificSelection.inpIndDates).replace("[", "('").replace("]", "')").replace(", ", "', '");
@@ -59,20 +61,20 @@ public class DbConnect {
             for(int i = 1; i <= colCount; i++) {
                 String colName = md.getColumnName(i);
                 if(i == colCount) {
-                    System.out.print(colName + "\n");
+                    System.out.printf(format1, colName + "\n");
                 }
                 else {
-                    System.out.print(colName + "\t");
+                    System.out.printf(format1, colName + "\t");
                 }
             }
 
             while (rs.next()) {
                 for (int i = 1; i <= colCount; i++) {
                     if (i == colCount) {
-                        System.out.print(rs.getString(i) + "\n");
+                        System.out.printf(format2, rs.getString(i) + "\n");
                     }
                     else {
-                        System.out.print(rs.getString(i) + "\t");
+                        System.out.printf(format2, rs.getString(i) + "\t");
                     }
                 }
                                 
