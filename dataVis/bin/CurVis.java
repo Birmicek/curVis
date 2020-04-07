@@ -1,6 +1,5 @@
 package bin;
 
-import java.util.Scanner;
 import src.*;
 
 public class CurVis 

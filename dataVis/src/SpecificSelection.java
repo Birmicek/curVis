@@ -1,9 +1,6 @@
 package src;
 
 import java.util.Scanner;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Arrays;
 import bin.CurVis;
 
 public class SpecificSelection {
@@ -11,6 +8,9 @@ public class SpecificSelection {
     int selectedSubOption = CurVis.subSelection;
     public static String[] inpIndCurr;
     public static String[] inpIndDates;
+    public static String[] inpRangeCurr;
+    public static String startRanDate;
+    public static String endRanDate;
     String currencies = "USD, JPY, BGN, CYP, CZK, DKK, EEK, GBP, HUF, LTL, LVL, MTL, PLN, ROL, RON, SEK, SIT, SKK, CHF, ISK, NOK, HRK, RUB, TRL, TRY, AUD, BRL, CAD, CNY, HKD, IDR, ILS, INR, KRW, MXN, MYR, NZD, PHP, SGD, THB, ZAR";
 
     public void selection() {
@@ -41,17 +41,17 @@ public class SpecificSelection {
                         Scanner rangeCurr = new Scanner(System.in);
                         System.out.println("Please enter 1 or more currencies (from above list) separated by comma without space. Example: USD,JPY,CZK or type 'all' to see values for all currencies\n");
                         System.out.print("Currencies: ");
-                        String[] inpRangeCurr = rangeCurr.next().split(",");
+                        inpRangeCurr = rangeCurr.next().split(",");
 
                         Scanner startDate = new Scanner(System.in);
                         System.out.println("\nPlease enter Start date of the date range. Example: 1999-01-22\n");
                         System.out.print("Start date: ");
-                        String startRanDate = startDate.next();
+                        startRanDate = startDate.next();
 
                         Scanner endDate = new Scanner(System.in);
                         System.out.println("\nPlease enter End date of the date range. Example: 2020-03-25\n");
                         System.out.print("End date: ");
-                        String endRanDate = endDate.next();
+                        endRanDate = endDate.next();
 
                         // System.out.println(Arrays.toString(inpRangeCurr));
                         // System.out.println(startRanDate);
