@@ -13,10 +13,12 @@ public class SpecificSelection {
     public static String endRanDate;
     String currencies = "USD, JPY, BGN, CYP, CZK, DKK, EEK, GBP, HUF, LTL, LVL, MTL, PLN, ROL, RON, SEK, SIT, SKK, CHF, ISK, NOK, HRK, RUB, TRL, TRY, AUD, BRL, CAD, CNY, HKD, IDR, ILS, INR, KRW, MXN, MYR, NZD, PHP, SGD, THB, ZAR";
 
-    public void selection() {
+    public SpecificSelection() {
         System.out.println("=============================");
         System.out.println("\nHere is a list of available currencies:\n" + currencies + "\n\nand example of a date format: 1999-01-22\n");
-        
+    }
+
+    public void selection() {
         switch(selectedOption) {
             case 1:
                 switch(selectedSubOption){
